@@ -1,0 +1,41 @@
+.appointment-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.header-row {
+  font-weight: bold;
+  border-bottom: 1px solid #000;
+}
+
+.data-row {
+  border-bottom: 1px solid #000;
+}
+
+.actions-column {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.actions-column > * {
+  margin-right: 5px;
+}
+
+@media (max-width: 600px) {
+  .table {
+    min-width: 800px;
+  }
+}
