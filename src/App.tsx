@@ -31,6 +31,12 @@ import ClienteList from "./pages/cliente/ClienteList";
 import ClienteEdit from "./pages/cliente/ClienteEdit";
 import DespachoList from "./pages/despacho/DespachoList";
 import DespachoEdit from "./pages/despacho/DespachoEdit";
+import UsuarioList from "./pages/usuario/UsuarioList";
+import UsuarioEdit from "./pages/usuario/UsuarioEdit";
+import ProductoList from "./pages/producto/ProductoList";
+import ProductoEdit from "./pages/producto/ProductoEdit";
+import InventarioEdit from "./pages/inventario/InventarioEdit";
+import InventarioList from "./pages/inventario/InventarioList";
 
 setupIonicReact();
 
@@ -41,8 +47,14 @@ const App: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
-            <Route path="/page/cliente/:id" exact={true}>
+            <Route path="/page/usuario/:id" exact={true}>
               <ClienteEdit />
+            </Route>
+            <Route path="/page/usuarios" exact={true}>
+              <UsuarioList />
+            </Route>
+            <Route path="/page/cliente/:id" exact={true}>
+              <UsuarioEdit />
             </Route>
             <Route path="/page/clientes" exact={true}>
               <ClienteList />
@@ -52,6 +64,19 @@ const App: React.FC = () => {
             </Route>
             <Route path="/page/despachos/:id" exact={true}>
               <DespachoEdit />
+            </Route>
+            <Route path="/page/producto/:id" exact={true}>
+              <ProductoEdit />
+            </Route>
+            <Route path="/page/productos" exact={true}>
+              <ProductoList />
+            </Route>
+
+            <Route path="/page/inventario/:id" exact={true}>
+              <InventarioEdit />
+            </Route>
+            <Route path="/page/inventarios" exact={true}>
+              <InventarioList />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>

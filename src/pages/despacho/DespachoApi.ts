@@ -1,22 +1,52 @@
-export function searchDespachos() {
-    if (!localStorage['despachos']) {
-        localStorage['despachos'] = '[]';
-    }
-    let despachos = localStorage['despachos'];
-    despachos = JSON.parse(despachos);
-    return despachos
+import Despacho from "./Despacho";
+
+import { ENV_DEV, ENV_PROD } from '../../env/env'
+import { CONSTANTES } from "../../utils/utils";
+const URL_BASE = CONSTANTES.local ? ENV_DEV.ENDPOINT : ENV_PROD.ENDPOINT
+const API = CONSTANTES.pathDespacho
+const URL = URL_BASE + API
+export async function searchDespachos() {
+    debugger
+    let response = await fetch(URL, {
+        "method": 'GET',
+        "headers": {
+            "Content-Type": 'application/json'
+        }
+    })
+    return await response.json();
+
 }
 
-export function removeDespacho(id: string) {
-    let despachos = searchDespachos();
+export async function removeDespacho(id: string) {
+    await fetch(URL + id, {
+        "method": 'DELETE',
+        "headers": {
+            "Content-Type": 'application/json'
+        }
+    })
 
-    let indice = despachos.findIndex((despacho: any) => despacho.id == id);
-    despachos.splice(indice, 1)
-    localStorage['despachos'] = JSON.stringify(despachos);
 }
 
-export function saveDespacho(despacho: any) {
-    let despachos = searchDespachos();
-    despachos.push(despacho)
-    localStorage['despachos'] = JSON.stringify(despachos);
+export async function saveDespacho(cliente: Despacho) {
+    await fetch(URL, {
+        "method": 'POST',
+        "body": JSON.stringify(cliente),
+        "headers": {
+            "Content-Type": 'application/json'
+        }
+    });
+}
+
+
+
+export async function searchDespachoById(id: string) {
+    debugger
+    let response = await fetch(URL + id, {
+        "method": 'GET',
+        "headers": {
+            "Content-Type": 'application/json'
+        }
+    })
+    return await response.json();
+
 }

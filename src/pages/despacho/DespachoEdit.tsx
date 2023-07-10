@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   IonButton,
   IonButtons,
@@ -7,31 +8,50 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonInput,
   IonItem,
+  IonLabel,
   IonMenuButton,
   IonPage,
   IonRow,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useParams } from "react-router";
+import { useHistory, useParams, useRouteMatch } from "react-router";
 import ExploreContainer from "../../components/ExploreContainer";
-import { add, logoMarkdown, pencil, trash } from "ionicons/icons";
-import { useEffect, useState } from "react";
-import { removeDespacho, saveDespacho, searchDespachos } from "./DespachoApi";
+import { add, checkmark, close, pencil, text, trash } from "ionicons/icons";
+import {
+  removeDespacho,
+  saveDespacho,
+  searchDespachoById,
+  searchDespachos,
+} from "./DespachoApi";
+import Despacho from "./Despacho";
 
 const DespachoEdit: React.FC = () => {
-  const { name, id } = useParams<{ name: string; id: string }>();
+  const { name } = useParams<{ name: string }>();
 
-  const [despachos, setDespachos] = useState<any>([]);
+  const [despacho, setDespacho] = useState<Despacho>({});
+  const history = useHistory();
+  const routeMatch: any = useRouteMatch("/page/despacho/:id");
+  const id = routeMatch?.params.id;
 
   useEffect(() => {
     search();
-  }, []);
+  }, [history.location.pathname]);
 
-  const search = () => {
-    let result = searchDespachos();
-    setDespachos(result);
+  const search = async () => {
+    if (id === "new") {
+      setDespacho({});
+    } else {
+      let result = await searchDespachoById(id);
+      setDespacho(result);
+    }
+  };
+
+  const save = async () => {
+    await saveDespacho(despacho);
+    history.push("/page/despachos");
   };
 
   return (
@@ -44,6 +64,7 @@ const DespachoEdit: React.FC = () => {
           <IonTitle>{name}</IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
@@ -53,21 +74,72 @@ const DespachoEdit: React.FC = () => {
 
         <IonContent>
           <IonCard>
-            <IonTitle>Gestion de Despachos {id}</IonTitle>
+            <IonTitle>
+              {id === "new" ? "Agregar Despacho" : "Editar Despacho"}
+            </IonTitle>
+            <IonRow>
+              <IonCol>
+                <IonItem>
+                  <IonLabel position="stacked">Nombre</IonLabel>
+                  <IonInput
+                    onIonChange={(e) =>
+                      (despacho.nombre = String(e.detail.value))
+                    }
+                    value={despacho.nombre}
+                  ></IonInput>
+                </IonItem>
+              </IonCol>
 
+              <IonCol>
+                <IonItem>
+                  <IonLabel position="stacked">Apellido</IonLabel>
+                  <IonInput
+                    onIonChange={(e) =>
+                      (despacho.direccionenvio = String(e.detail.value))
+                    }
+                    value={despacho.direccionenvio}
+                  ></IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <IonItem>
+                  <IonLabel position="stacked">Dirección</IonLabel>
+                  <IonInput
+                    onIonChange={(e) =>
+                      (despacho.razonsocial = String(e.detail.value))
+                    }
+                    value={despacho.razonsocial}
+                  ></IonInput>
+                </IonItem>
+              </IonCol>
+              <IonCol>
+                <IonItem>
+                  <IonLabel position="stacked">DNI</IonLabel>
+                  <IonInput
+                    onIonChange={(e) =>
+                      (despacho.estado = String(e.detail.value))
+                    }
+                    value={despacho.estado}
+                  ></IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
             <IonItem>
-              <IonButton color="primary" fill="solid" slot="end" size="default">
-                <IonIcon icon={add} />
+              <IonButton
+                onClick={save}
+                color="success"
+                fill="solid"
+                slot="end"
+                size="default"
+              >
+                <IonIcon icon={checkmark} />
                 Guardar
               </IonButton>
             </IonItem>
           </IonCard>
-          <IonButton onClick={() => {}} color="danger" fill="clear">
-            Prueba Local Storage
-          </IonButton>
         </IonContent>
-
-        <ExploreContainer name={name} />
       </IonContent>
     </IonPage>
   );

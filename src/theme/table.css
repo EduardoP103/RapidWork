@@ -39,3 +39,16 @@
     min-width: 800px;
   }
 }
+
+.card-description {
+  max-height: 6em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.card-image {
+  height: 200px; /* Establece la altura deseada */
+  object-fit: cover;
+}

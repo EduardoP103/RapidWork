@@ -19,14 +19,13 @@ import { useHistory, useParams } from "react-router";
 import { add, close, pencil, trash } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { removeCliente, saveCliente, searchClientes } from "./ClienteApi";
-import Doctor from "./Cliente";
-
-import "../../theme/table.css";
 import Cliente from "./Cliente";
 
-const DoctorList: React.FC = () => {
+import "../../theme/table.css";
+
+const ClienteList: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  const [clientees, setDoctores] = useState<Doctor[]>([]);
+  const [clientes, setClientees] = useState<Cliente[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const history = useHistory();
 
@@ -36,7 +35,7 @@ const DoctorList: React.FC = () => {
 
   const search = async () => {
     let result = await searchClientes();
-    setDoctores(result);
+    setClientees(result);
   };
 
   const remove = async (id: string) => {
@@ -44,11 +43,11 @@ const DoctorList: React.FC = () => {
     search();
   };
 
-  const addDoctor = () => {
+  const addCliente = () => {
     history.push("/page/cliente/new");
   };
 
-  const editDoctor = (id: string) => {
+  const editCliente = (id: string) => {
     history.push("/page/cliente/" + id);
   };
 
@@ -56,7 +55,7 @@ const DoctorList: React.FC = () => {
     setSearchTerm(event.detail.value || "");
   };
 
-  const filteredClientes = clientees.filter((cliente: Doctor) => {
+  const filteredClientes = clientes.filter((cliente: Cliente) => {
     const fullName = `${cliente.nombre} ${cliente.apellido}`;
     return fullName.toLowerCase().includes(searchTerm.toLowerCase());
   });
@@ -84,14 +83,14 @@ const DoctorList: React.FC = () => {
             <IonTitle>Listado de Clientes</IonTitle>
             <IonItem>
               <IonButton
-                onClick={addDoctor}
+                onClick={addCliente}
                 color="primary"
                 fill="solid"
                 slot="end"
                 size="default"
               >
                 <IonIcon icon={add} />
-                Agregar Doctor
+                Agregar Cliente
               </IonButton>
             </IonItem>
 
@@ -107,7 +106,7 @@ const DoctorList: React.FC = () => {
                   <IonCol>Apellido</IonCol>
                   <IonCol>Direccion</IonCol>
                   <IonCol>DNI</IonCol>
-                  <IonCol>Email</IonCol>
+                  <IonCol>Correo</IonCol>
                   <IonCol>Acciones</IonCol>
                 </IonRow>
                 {filteredClientes.map((cliente: Cliente) => (
@@ -121,7 +120,7 @@ const DoctorList: React.FC = () => {
                       <IonButton
                         color="primary"
                         fill="clear"
-                        onClick={() => editDoctor(String(cliente.id_cliente))}
+                        onClick={() => editCliente(String(cliente.id_cliente))}
                       >
                         <IonIcon icon={pencil} slot="icon-only" />
                       </IonButton>
@@ -145,4 +144,4 @@ const DoctorList: React.FC = () => {
   );
 };
 
-export default DoctorList;
+export default ClienteList;

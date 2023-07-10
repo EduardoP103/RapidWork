@@ -11,46 +11,55 @@ import {
   IonMenuButton,
   IonPage,
   IonRow,
+  IonSearchbar,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import ExploreContainer from "../../components/ExploreContainer";
-import { add, logoMarkdown, pencil, trash } from "ionicons/icons";
+import { add, close, pencil, trash } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { removeDespacho, saveDespacho, searchDespachos } from "./DespachoApi";
+import Doctor from "./Despacho";
 
-const DespachoList: React.FC = () => {
+import "../../theme/table.css";
+import Despacho from "./Despacho";
+
+const DoctorList: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  const [despachos, setDespachos] = useState<any>([]);
+  const [despachos, setDoctores] = useState<Doctor[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const history = useHistory();
 
   useEffect(() => {
     search();
-  }, []);
+  }, [history.location.pathname]);
 
-  const search = () => {
-    let result = searchDespachos();
-    setDespachos(result);
+  const search = async () => {
+    let result = await searchDespachos();
+    setDoctores(result);
   };
 
-  const remove = (id: string) => {
-    removeDespacho(id);
+  const remove = async (id: string) => {
+    await removeDespacho(id);
     search();
   };
 
-  const pruebaLocalStorage = () => {
-    const ejemplo = {
-      id: "1",
-      nombre: "en mi casa",
-      direccionenvio: "en mi otra casa",
-      razonsocial: "aqui",
-      estado: "entregado",
-    };
-    saveDespacho(ejemplo);
+  const addDoctor = () => {
+    history.push("/page/despacho/new");
   };
 
-  const addDespacho = () => {};
+  const editDoctor = (id: string) => {
+    history.push("/page/despacho/" + id);
+  };
+
+  const handleSearch = (event: CustomEvent) => {
+    setSearchTerm(event.detail.value || "");
+  };
+
+  const filteredDespachos = despachos.filter((despacho: Doctor) => {
+    const fullName = `${despacho.nombre} ${despacho.direccionenvio}`;
+    return fullName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <IonPage>
@@ -62,6 +71,7 @@ const DespachoList: React.FC = () => {
           <IonTitle>{name}</IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
@@ -71,10 +81,10 @@ const DespachoList: React.FC = () => {
 
         <IonContent>
           <IonCard>
-            <IonTitle>Gestion de Despachos</IonTitle>
+            <IonTitle>Listado de Despachos</IonTitle>
             <IonItem>
               <IonButton
-                onClick={addDespacho}
+                onClick={addDoctor}
                 color="primary"
                 fill="solid"
                 slot="end"
@@ -84,45 +94,53 @@ const DespachoList: React.FC = () => {
                 Agregar Despacho
               </IonButton>
             </IonItem>
-            <IonGrid className="table">
-              <IonRow>
-                <IonCol>Nombre</IonCol>
-                <IonCol>Direccion de envio</IonCol>
-                <IonCol>Razon Social</IonCol>
-                <IonCol>Estado</IonCol>
-                <IonCol>Acciones</IonCol>
-              </IonRow>
-              {despachos.map((despacho: any) => (
-                <IonRow>
-                  <IonCol>{despacho.nombre}</IonCol>
-                  <IonCol>{despacho.direccionenvio}</IonCol>
-                  <IonCol>{despacho.razonsocial}</IonCol>
-                  <IonCol>{despacho.estado}</IonCol>
-                  <IonCol>
-                    <IonButton color="primary" fill="clear">
-                      <IonIcon icon={pencil} slot="icon-only" />
-                    </IonButton>
-                    <IonButton
-                      color="danger"
-                      fill="clear"
-                      onClick={() => remove(despacho.id)}
-                    >
-                      <IonIcon icon={trash} slot="icon-only" />
-                    </IonButton>
-                  </IonCol>
-                </IonRow>
-              ))}
-            </IonGrid>
-          </IonCard>
-          <IonButton onClick={pruebaLocalStorage} color="danger" fill="clear">
-            Prueba Local Storage
-          </IonButton>
-        </IonContent>
 
-        <ExploreContainer name={name} />
+            <IonSearchbar
+              value={searchTerm}
+              onIonInput={handleSearch}
+            ></IonSearchbar>
+
+            <div className="table-container">
+              <IonGrid className="table">
+                <IonRow className="header-row">
+                  <IonCol>Nombre</IonCol>
+                  <IonCol>Dirección de Envio</IonCol>
+                  <IonCol>Razón Social</IonCol>
+                  <IonCol>Estado</IonCol>
+                  <IonCol>Acciones</IonCol>
+                </IonRow>
+                {filteredDespachos.map((despacho: Despacho) => (
+                  <IonRow className="data-row" key={despacho.id_despacho}>
+                    <IonCol>{despacho.nombre}</IonCol>
+                    <IonCol>{despacho.direccionenvio}</IonCol>
+                    <IonCol>{despacho.razonsocial}</IonCol>
+                    <IonCol>{despacho.estado}</IonCol>
+                    <IonCol className="actions-column">
+                      <IonButton
+                        color="primary"
+                        fill="clear"
+                        onClick={() => editDoctor(String(despacho.id_despacho))}
+                      >
+                        <IonIcon icon={pencil} slot="icon-only" />
+                      </IonButton>
+
+                      <IonButton
+                        color="danger"
+                        fill="clear"
+                        onClick={() => remove(String(despacho.id_despacho))}
+                      >
+                        <IonIcon icon={close} slot="icon-only" />
+                      </IonButton>
+                    </IonCol>
+                  </IonRow>
+                ))}
+              </IonGrid>
+            </div>
+          </IonCard>
+        </IonContent>
       </IonContent>
     </IonPage>
   );
 };
 
-export default DespachoList;
+export default DoctorList;
