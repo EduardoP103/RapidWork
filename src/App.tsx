@@ -48,13 +48,13 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Route path="/page/usuario/:id" exact={true}>
-              <ClienteEdit />
+              <UsuarioEdit />
             </Route>
             <Route path="/page/usuarios" exact={true}>
               <UsuarioList />
             </Route>
             <Route path="/page/cliente/:id" exact={true}>
-              <UsuarioEdit />
+              <ClienteEdit />
             </Route>
             <Route path="/page/clientes" exact={true}>
               <ClienteList />
@@ -71,7 +71,6 @@ const App: React.FC = () => {
             <Route path="/page/productos" exact={true}>
               <ProductoList />
             </Route>
-
             <Route path="/page/inventario/:id" exact={true}>
               <InventarioEdit />
             </Route>

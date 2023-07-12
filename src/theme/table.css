@@ -52,3 +52,16 @@
   height: 200px; /* Establece la altura deseada */
   object-fit: cover;
 }
+.estado-amarillo {
+  color: white;
+  background-color: yellow;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.estado-verde {
+  color: white;
+  background-color: rgb(154, 222, 154);
+  text-transform: uppercase;
+  font-weight: bold;
+}

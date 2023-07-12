@@ -92,7 +92,7 @@ const DespachoEdit: React.FC = () => {
 
               <IonCol>
                 <IonItem>
-                  <IonLabel position="stacked">Apellido</IonLabel>
+                  <IonLabel position="stacked">Direcció envio</IonLabel>
                   <IonInput
                     onIonChange={(e) =>
                       (despacho.direccionenvio = String(e.detail.value))
@@ -105,7 +105,7 @@ const DespachoEdit: React.FC = () => {
             <IonRow>
               <IonCol>
                 <IonItem>
-                  <IonLabel position="stacked">Dirección</IonLabel>
+                  <IonLabel position="stacked">Razon Social</IonLabel>
                   <IonInput
                     onIonChange={(e) =>
                       (despacho.razonsocial = String(e.detail.value))
@@ -116,7 +116,7 @@ const DespachoEdit: React.FC = () => {
               </IonCol>
               <IonCol>
                 <IonItem>
-                  <IonLabel position="stacked">DNI</IonLabel>
+                  <IonLabel position="stacked">Estado</IonLabel>
                   <IonInput
                     onIonChange={(e) =>
                       (despacho.estado = String(e.detail.value))
