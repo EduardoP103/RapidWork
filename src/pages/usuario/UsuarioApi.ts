@@ -2,7 +2,7 @@ import Usuario from "./Usuario";
 
 import { ENV_DEV, ENV_PROD } from '../../env/env'
 import { CONSTANTES } from "../../utils/utils";
-const URL_BASE = CONSTANTES.local ? ENV_DEV.ENDPOINT : ENV_PROD.ENDPOINT
+const URL_BASE = CONSTANTES.local ? ENV_DEV.ENDPOINT_USER_SERVICE : ENV_PROD.ENDPOINT_USER_SERVICE
 const API = CONSTANTES.pathUsuario
 const URL = URL_BASE + API
 export async function searchUsuarios() {

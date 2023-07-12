@@ -2,7 +2,8 @@ import Producto from "./Producto";
 
 import { ENV_DEV, ENV_PROD } from '../../env/env'
 import { CONSTANTES } from "../../utils/utils";
-const URL_BASE = CONSTANTES.local ? ENV_DEV.ENDPOINT : ENV_PROD.ENDPOINT
+// const URL_BASE = CONSTANTES.local ? ENV_DEV.ENDPOINT : ENV_PROD.ENDPOINT
+const URL_BASE = CONSTANTES.local ? ENV_DEV.ENDPOINT_PRODUCT_SERVICE : ENV_PROD.ENDPOINT_PRODUCT_SERVICE
 const API = CONSTANTES.pathProducto
 const URL = URL_BASE + API
 export async function searchProductos() {

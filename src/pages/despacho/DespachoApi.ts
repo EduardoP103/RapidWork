@@ -2,7 +2,7 @@ import Despacho from "./Despacho";
 
 import { ENV_DEV, ENV_PROD } from '../../env/env'
 import { CONSTANTES } from "../../utils/utils";
-const URL_BASE = CONSTANTES.local ? ENV_DEV.ENDPOINT : ENV_PROD.ENDPOINT
+const URL_BASE = CONSTANTES.local ? ENV_DEV.ENDPOINT_OFFICE_SERVICE : ENV_PROD.ENDPOINT_OFFICE_SERVICE
 const API = CONSTANTES.pathDespacho
 const URL = URL_BASE + API
 export async function searchDespachos() {

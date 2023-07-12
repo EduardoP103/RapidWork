@@ -4,5 +4,6 @@ export const CONSTANTES = {
     pathDespacho: '/despacho/',
     pathUsuario: '/usuario/',
     pathInventario: '/inventario/',
-    pathProducto: '/producto/'
+    pathProducto: '/producto/',
+    pathPedido: '/pedido/'
 }

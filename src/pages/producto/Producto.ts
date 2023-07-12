@@ -1,8 +1,8 @@
 export default interface Producto {
-    id_producto: string;
+    productoId: string;
     nombre: string;
     descripcion: string;
     precio: string;
     imagen: string;
-    id_despacho: string
+    ofertaId: string
 }
