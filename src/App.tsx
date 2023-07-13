@@ -19,7 +19,7 @@ import ProductoList from "./pages/producto/ProductoList";
 import ProductoEdit from "./pages/producto/ProductoEdit";
 import InventarioEdit from "./pages/inventario/InventarioEdit";
 import InventarioList from "./pages/inventario/InventarioList";
-import Carrito from "./pages/carrito_compras/Carrito";
+// import Carrito from "./pages/carrito_compras/Carrito";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
