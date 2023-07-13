@@ -89,6 +89,7 @@ const UsuarioEdit: React.FC = () => {
                   ></IonInput>
                 </IonItem>
               </IonCol>
+
               <IonCol>
                 <IonItem>
                   <IonLabel position="stacked">Apellido</IonLabel>
@@ -100,8 +101,6 @@ const UsuarioEdit: React.FC = () => {
                   ></IonInput>
                 </IonItem>
               </IonCol>
-            </IonRow>
-            <IonRow>
               <IonCol>
                 <IonItem>
                   <IonLabel position="stacked">cargo</IonLabel>
@@ -113,6 +112,8 @@ const UsuarioEdit: React.FC = () => {
                   ></IonInput>
                 </IonItem>
               </IonCol>
+            </IonRow>
+            <IonRow>
               <IonCol>
                 <IonItem>
                   <IonLabel position="stacked">Dirección</IonLabel>
@@ -124,6 +125,7 @@ const UsuarioEdit: React.FC = () => {
                   ></IonInput>
                 </IonItem>
               </IonCol>
+
               <IonCol>
                 <IonItem>
                   <IonLabel position="stacked">Email</IonLabel>
@@ -132,6 +134,15 @@ const UsuarioEdit: React.FC = () => {
                       (usuario.email = String(e.detail.value))
                     }
                     value={usuario.email}
+                  ></IonInput>
+                </IonItem>
+              </IonCol>
+              <IonCol>
+                <IonItem>
+                  <IonLabel position="stacked">dni</IonLabel>
+                  <IonInput
+                    onIonChange={(e) => (usuario.dni = String(e.detail.value))}
+                    value={usuario.dni}
                   ></IonInput>
                 </IonItem>
               </IonCol>

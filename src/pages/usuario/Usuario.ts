@@ -5,7 +5,7 @@ export default interface Cliente {
     cargo: string;
     direccion: string;
     email: string;
-    dni: String;
+    dni: string;
     telefono: string;
     password: string
 }

@@ -17,15 +17,9 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useHistory, useParams, useRouteMatch } from "react-router";
-import ExploreContainer from "../../components/ExploreContainer";
-import { add, checkmark, close, pencil, text, trash } from "ionicons/icons";
-import {
-  removeDespacho,
-  saveDespacho,
-  searchDespachoById,
-  searchDespachos,
-} from "./DespachoApi";
+import { useHistory, useParams } from "react-router";
+import { checkmark } from "ionicons/icons";
+import { saveDespacho, searchDespachoById } from "./DespachoApi";
 import Despacho from "./Despacho";
 
 const DespachoEdit: React.FC = () => {
@@ -33,12 +27,11 @@ const DespachoEdit: React.FC = () => {
 
   const [despacho, setDespacho] = useState<Despacho>({});
   const history = useHistory();
-  const routeMatch: any = useRouteMatch("/page/despacho/:id");
-  const id = routeMatch?.params.id;
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     search();
-  }, [history.location.pathname]);
+  }, []);
 
   const search = async () => {
     if (id === "new") {
@@ -83,7 +76,7 @@ const DespachoEdit: React.FC = () => {
                   <IonLabel position="stacked">Nombre</IonLabel>
                   <IonInput
                     onIonChange={(e) =>
-                      (despacho.nombre = String(e.detail.value))
+                      setDespacho({ ...despacho, nombre: e.detail.value! })
                     }
                     value={despacho.nombre}
                   ></IonInput>
@@ -92,10 +85,13 @@ const DespachoEdit: React.FC = () => {
 
               <IonCol>
                 <IonItem>
-                  <IonLabel position="stacked">Direcció envio</IonLabel>
+                  <IonLabel position="stacked">Apellido</IonLabel>
                   <IonInput
                     onIonChange={(e) =>
-                      (despacho.direccionenvio = String(e.detail.value))
+                      setDespacho({
+                        ...despacho,
+                        direccionenvio: e.detail.value!,
+                      })
                     }
                     value={despacho.direccionenvio}
                   ></IonInput>
@@ -105,10 +101,13 @@ const DespachoEdit: React.FC = () => {
             <IonRow>
               <IonCol>
                 <IonItem>
-                  <IonLabel position="stacked">Razon Social</IonLabel>
+                  <IonLabel position="stacked">Dirección</IonLabel>
                   <IonInput
                     onIonChange={(e) =>
-                      (despacho.razonsocial = String(e.detail.value))
+                      setDespacho({
+                        ...despacho,
+                        razonsocial: e.detail.value!,
+                      })
                     }
                     value={despacho.razonsocial}
                   ></IonInput>
@@ -116,10 +115,10 @@ const DespachoEdit: React.FC = () => {
               </IonCol>
               <IonCol>
                 <IonItem>
-                  <IonLabel position="stacked">Estado</IonLabel>
+                  <IonLabel position="stacked">DNI</IonLabel>
                   <IonInput
                     onIonChange={(e) =>
-                      (despacho.estado = String(e.detail.value))
+                      setDespacho({ ...despacho, estado: e.detail.value! })
                     }
                     value={despacho.estado}
                   ></IonInput>

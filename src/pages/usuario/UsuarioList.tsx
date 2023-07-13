@@ -17,7 +17,14 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { add, close, downloadOutline, pencil } from "ionicons/icons";
+import {
+  add,
+  arrowDown,
+  close,
+  downloadOutline,
+  downloadSharp,
+  pencil,
+} from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { removeUsuario, searchUsuarios } from "./UsuarioApi";
 import Usuario from "./Usuario";
@@ -76,13 +83,12 @@ const UsuarioList: React.FC = () => {
     const tableData = usuarios.map((usuario) => [
       usuario.nombre,
       usuario.apellido,
-      usuario.cargo,
       usuario.direccion,
+      usuario.dni,
       usuario.email,
-      usuario.telefono,
     ]);
     doc.autoTable({
-      head: [["Nombre", "Apellido", "Cargo", "Dirección", "Email", "Teléfono"]],
+      head: [["Nombre", "Apellido", "Dirección", "DNI", "Correo"]],
       body: tableData,
     });
     doc.save("usuarios.pdf");
@@ -143,24 +149,24 @@ const UsuarioList: React.FC = () => {
                 <IonRow className="header-row">
                   <IonCol>Nombre</IonCol>
                   <IonCol>Apellido</IonCol>
-                  <IonCol>Cargo</IonCol>
-                  <IonCol>Dirección</IonCol>
-                  <IonCol>Email</IonCol>
-                  <IonCol>Teléfono</IonCol>
+                  <IonCol>cargo</IonCol>
+                  <IonCol>direccion</IonCol>
+                  <IonCol>email</IonCol>
+                  <IonCol>dni</IonCol>
+                  <IonCol>telefono</IonCol>
+                  <IonCol>password</IonCol>
                   <IonCol>Acciones</IonCol>
                 </IonRow>
                 {filteredUsuarios.map((usuario: Usuario) => (
                   <IonRow className="data-row" key={usuario.idUsuario}>
-                    <IonCol>
-                      <strong>{usuario.nombre}</strong>
-                    </IonCol>
-                    <IonCol>
-                      <strong>{usuario.apellido}</strong>
-                    </IonCol>
+                    <IonCol>{usuario.nombre}</IonCol>
+                    <IonCol>{usuario.apellido}</IonCol>
                     <IonCol>{usuario.cargo}</IonCol>
                     <IonCol>{usuario.direccion}</IonCol>
                     <IonCol>{usuario.email}</IonCol>
+                    <IonCol>{usuario.dni}</IonCol>
                     <IonCol>{usuario.telefono}</IonCol>
+                    <IonCol>{usuario.password}</IonCol>
                     <IonCol className="actions-column">
                       <IonButton
                         color="primary"

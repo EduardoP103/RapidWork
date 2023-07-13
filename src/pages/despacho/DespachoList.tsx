@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   IonButton,
   IonButtons,
@@ -19,9 +20,7 @@ import {
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import { add, close, car, pencil, trash } from "ionicons/icons";
-import { useEffect, useState } from "react";
 import { removeDespacho, saveDespacho, searchDespachos } from "./DespachoApi";
-
 import "../../theme/table.css";
 import Despacho from "./Despacho";
 
@@ -50,7 +49,7 @@ const DespachoList: React.FC = () => {
   };
 
   const editDespacho = (id: string) => {
-    history.push("/page/despacho/" + id);
+    history.push(`/page/despachos/${id}`);
   };
 
   const handleSearch = (event: CustomEvent) => {
@@ -115,9 +114,7 @@ const DespachoList: React.FC = () => {
                     <IonCard key={despacho.id_despacho}>
                       <IonItem>
                         <IonButton
-                          onClick={() =>
-                            editDespacho(String(despacho.id_despacho))
-                          }
+                          onClick={() => editDespacho(despacho.id_despacho)}
                           color="primary"
                           fill="clear"
                           slot="start"
@@ -135,15 +132,13 @@ const DespachoList: React.FC = () => {
                         <IonButton
                           color="primary"
                           fill="clear"
-                          onClick={() =>
-                            editDespacho(String(despacho.id_despacho))
-                          }
+                          onClick={() => editDespacho(despacho.id_despacho)}
                         >
                           <IonIcon icon={pencil} slot="icon-only" />
                         </IonButton>
 
                         <IonButton
-                          onClick={() => remove(String(despacho.id_despacho))}
+                          onClick={() => remove(despacho.id_despacho)}
                           color="danger"
                           fill="clear"
                           slot="end"
