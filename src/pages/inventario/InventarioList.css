@@ -1,0 +1,14 @@
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Distribuye las cartas de manera uniforme en el espacio disponible */
+  align-items: flex-start; /* Alinea las cartas en la parte superior */
+}
+
+.card-container ion-card {
+  margin-bottom: 20px;
+  flex-basis: calc(
+    33.33% - 20px
+  ); /* Establece el ancho de cada carta como un tercio del contenedor y resta el margen */
+  text-align: center;
+}

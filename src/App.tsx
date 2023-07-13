@@ -1,3 +1,4 @@
+import React from "react";
 import {
   IonApp,
   IonRouterOutlet,
@@ -8,25 +9,6 @@ import { IonReactHashRouter, IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route } from "react-router-dom";
 import Menu from "./components/Menu";
 import Page from "./pages/Page";
-
-/* Core CSS required for Ionic components to work properly */
-import "@ionic/react/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
-import "@ionic/react/css/normalize.css";
-import "@ionic/react/css/structure.css";
-import "@ionic/react/css/typography.css";
-
-/* Optional CSS utils that can be commented out */
-import "@ionic/react/css/padding.css";
-import "@ionic/react/css/float-elements.css";
-import "@ionic/react/css/text-alignment.css";
-import "@ionic/react/css/text-transformation.css";
-import "@ionic/react/css/flex-utils.css";
-import "@ionic/react/css/display.css";
-
-/* Theme variables */
-import "./theme/variables.css";
 import ClienteList from "./pages/cliente/ClienteList";
 import ClienteEdit from "./pages/cliente/ClienteEdit";
 import DespachoList from "./pages/despacho/DespachoList";
@@ -37,6 +19,19 @@ import ProductoList from "./pages/producto/ProductoList";
 import ProductoEdit from "./pages/producto/ProductoEdit";
 import InventarioEdit from "./pages/inventario/InventarioEdit";
 import InventarioList from "./pages/inventario/InventarioList";
+import Carrito from "./pages/carrito_compras/Carrito";
+
+import "@ionic/react/css/core.css";
+import "@ionic/react/css/normalize.css";
+import "@ionic/react/css/structure.css";
+import "@ionic/react/css/typography.css";
+import "@ionic/react/css/padding.css";
+import "@ionic/react/css/float-elements.css";
+import "@ionic/react/css/text-alignment.css";
+import "@ionic/react/css/text-transformation.css";
+import "@ionic/react/css/flex-utils.css";
+import "@ionic/react/css/display.css";
+import "./theme/variables.css";
 
 setupIonicReact();
 
@@ -76,6 +71,12 @@ const App: React.FC = () => {
             </Route>
             <Route path="/page/inventarios" exact={true}>
               <InventarioList />
+            </Route>
+            <Route path="/carrito" exact={true}>
+              <Carrito />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/page/productos" />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonButton,
   IonButtons,
@@ -13,6 +13,8 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
+  IonList,
+  IonListHeader,
   IonMenuButton,
   IonPage,
   IonPopover,
@@ -22,8 +24,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { add, close, pencil, trash, image } from "ionicons/icons";
-import { useEffect, useState } from "react";
+import { add, close, pencil, trash, image, cart } from "ionicons/icons";
 import { removeProducto, saveProducto, searchProductos } from "./ProductoApi";
 import Producto from "./Producto";
 
@@ -33,15 +34,16 @@ const ProductoList: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   const [productos, setProductos] = useState<Producto[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [popoverState, setShowPopover] = useState<{
+  const [popoverState, setPopoverState] = useState<{
     showPopover: boolean;
     imageSrc: string;
-  }>({ showPopover: false, imageSrc: "" });
+    cartItems: Producto[];
+  }>({ showPopover: false, imageSrc: "", cartItems: [] });
   const history = useHistory();
 
   useEffect(() => {
     search();
-  }, [history.location.pathname]);
+  }, []);
 
   const search = async () => {
     let result = await searchProductos();
@@ -71,11 +73,43 @@ const ProductoList: React.FC = () => {
   });
 
   const openPopover = (imageSrc: string) => {
-    setShowPopover({ showPopover: true, imageSrc });
+    setPopoverState({ ...popoverState, showPopover: true, imageSrc });
   };
 
   const closePopover = () => {
-    setShowPopover({ showPopover: false, imageSrc: "" });
+    setPopoverState({ ...popoverState, showPopover: false });
+  };
+
+  const addToCart = (producto: Producto) => {
+    const updatedCartItems = [...popoverState.cartItems, producto];
+    setPopoverState({
+      ...popoverState,
+      showPopover: true,
+      imageSrc: producto.imagen,
+      cartItems: updatedCartItems,
+    });
+  };
+
+  const navigateToCart = () => {
+    history.push("/carrito");
+  };
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    for (const item of popoverState.cartItems) {
+      totalPrice += item.precio;
+    }
+    return totalPrice;
+  };
+
+  const handlePay = () => {
+    // Lógica para realizar el pago
+    console.log("Pago realizado");
+  };
+
+  const handleCancel = () => {
+    // Lógica para cancelar la lista de productos
+    setPopoverState({ showPopover: false, imageSrc: "", cartItems: [] });
   };
 
   return (
@@ -86,6 +120,16 @@ const ProductoList: React.FC = () => {
             <IonMenuButton />
           </IonButtons>
           <IonTitle>{name}</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={navigateToCart}>
+              <IonIcon icon={cart} />
+              {popoverState.cartItems.length > 0 && (
+                <span className="cart-count">
+                  {popoverState.cartItems.length}
+                </span>
+              )}
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
@@ -97,6 +141,12 @@ const ProductoList: React.FC = () => {
         </IonHeader>
 
         <IonContent>
+          <IonSearchbar
+            value={searchTerm}
+            onIonChange={handleSearch}
+            placeholder="Buscar productos..."
+          ></IonSearchbar>
+
           <IonGrid>
             <IonRow>
               {filteredProductos.map((producto: Producto) => (
@@ -104,7 +154,7 @@ const ProductoList: React.FC = () => {
                   size="12"
                   size-md="6"
                   size-lg="4"
-                  key={producto.id_producto}
+                  key={producto.productoId}
                 >
                   <IonCard>
                     <img
@@ -117,7 +167,7 @@ const ProductoList: React.FC = () => {
                       <IonCardTitle>S/{producto.precio}</IonCardTitle>
                     </IonCardHeader>
                     <IonCardContent>{producto.descripcion}</IonCardContent>
-                    {/* <IonItem>
+                    <IonItem>
                       <IonButton
                         color="primary"
                         fill="clear"
@@ -134,7 +184,14 @@ const ProductoList: React.FC = () => {
                       >
                         <IonIcon icon={close} slot="icon-only" />
                       </IonButton>
-                    </IonItem> */}
+                      <IonButton
+                        color="success"
+                        fill="clear"
+                        onClick={() => addToCart(producto)}
+                      >
+                        <IonIcon icon={cart} slot="icon-only" />
+                      </IonButton>
+                    </IonItem>
                   </IonCard>
                 </IonCol>
               ))}
@@ -145,8 +202,28 @@ const ProductoList: React.FC = () => {
         <IonPopover
           isOpen={popoverState.showPopover}
           onDidDismiss={closePopover}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
         >
-          <img src={popoverState.imageSrc} alt="Imagen del producto" />
+          <IonList>
+            <IonListHeader>Carrito de Compras</IonListHeader>
+            {popoverState.cartItems.map((item: Producto) => (
+              <IonItem key={item.productoId}>
+                {item.nombre} - S/{item.precio}
+              </IonItem>
+            ))}
+            <IonItem>Total: S/{calculateTotalPrice().toFixed(2)}</IonItem>
+          </IonList>
+          <IonButton expand="block" onClick={handlePay}>
+            Pagar
+          </IonButton>
+          <IonButton expand="block" fill="clear" onClick={handleCancel}>
+            Cancelar
+          </IonButton>
         </IonPopover>
       </IonContent>
     </IonPage>

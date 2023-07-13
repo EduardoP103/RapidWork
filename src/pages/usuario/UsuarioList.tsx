@@ -104,22 +104,32 @@ const UsuarioList: React.FC = () => {
                 <IonRow className="header-row">
                   <IonCol>Nombre</IonCol>
                   <IonCol>Apellido</IonCol>
-                  <IonCol>cargo</IonCol>
-                  <IonCol>direccion</IonCol>
-                  <IonCol>email</IonCol>
-                  <IonCol>telefono</IonCol>
-                  <IonCol>password</IonCol>
+                  <IonCol>Cargo</IonCol>
+                  <IonCol>Dirección</IonCol>
+                  <IonCol>Email</IonCol>
+                  <IonCol>Teléfono</IonCol>
+                  <IonCol>Password</IonCol>
                   <IonCol>Acciones</IonCol>
                 </IonRow>
                 {filteredUsuarios.map((usuario: Usuario) => (
                   <IonRow className="data-row" key={usuario.idUsuario}>
-                    <IonCol>{usuario.nombre}</IonCol>
-                    <IonCol>{usuario.apellido}</IonCol>
+                    <IonCol>
+                      <strong>{usuario.nombre}</strong>
+                    </IonCol>
+                    <IonCol>
+                      <strong>{usuario.apellido}</strong>
+                    </IonCol>
                     <IonCol>{usuario.cargo}</IonCol>
                     <IonCol>{usuario.direccion}</IonCol>
                     <IonCol>{usuario.email}</IonCol>
                     <IonCol>{usuario.telefono}</IonCol>
-                    <IonCol>{usuario.password}</IonCol>
+                    <IonCol>
+                      <input
+                        type="password"
+                        value={usuario.password}
+                        readOnly
+                      />
+                    </IonCol>
                     <IonCol className="actions-column">
                       <IonButton
                         color="primary"

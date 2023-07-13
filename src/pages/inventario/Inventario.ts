@@ -9,5 +9,5 @@ export default interface Inventario {
     preciocompra: string;
     precioventa: string;
     lote: string;
-    notas: string;
+
 }

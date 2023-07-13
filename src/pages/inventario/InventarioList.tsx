@@ -2,9 +2,9 @@ import {
   IonButton,
   IonButtons,
   IonCard,
+  IonCardContent,
   IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
   IonIcon,
   IonItem,
@@ -23,9 +23,10 @@ import {
   saveInventario,
   searchInventarios,
 } from "./InventarioApi";
+import Inventario from "./Inventario";
 
 import "../../theme/table.css";
-import Inventario from "./Inventario";
+import "./InventarioList.css";
 
 const InventarioList: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -103,53 +104,49 @@ const InventarioList: React.FC = () => {
               onIonInput={handleSearch}
             ></IonSearchbar>
 
-            <div className="table-container">
-              <IonGrid className="table">
-                <IonRow className="header-row">
-                  <IonCol>nombre</IonCol>
-                  <IonCol>cantidad</IonCol>
-                  <IonCol>fechaingreso</IonCol>
-                  <IonCol>fechaactualizacion</IonCol>
-                  <IonCol>Correo</IonCol>
-                  <IonCol>proveedor</IonCol>
-                  <IonCol>preciocompra</IonCol>
-                  <IonCol>precioventa</IonCol>
-                  <IonCol>lote</IonCol>
-                  <IonCol>notas</IonCol>
-                </IonRow>
-                {filteredInventarios.map((inventario: Inventario) => (
-                  <IonRow className="data-row" key={inventario.id_inventario}>
-                    <IonCol>{inventario.nombre}</IonCol>
-                    <IonCol>{inventario.cantidad}</IonCol>
-                    <IonCol>{inventario.fechaingreso}</IonCol>
-                    <IonCol>{inventario.fechaactualizacion}</IonCol>
-                    <IonCol>{inventario.proveedor}</IonCol>
-                    <IonCol>{inventario.preciocompra}</IonCol>
-                    <IonCol>{inventario.precioventa}</IonCol>
-                    <IonCol>{inventario.lote}</IonCol>
-                    <IonCol>{inventario.notas}</IonCol>
-                    <IonCol className="actions-column">
-                      <IonButton
-                        color="primary"
-                        fill="clear"
-                        onClick={() =>
-                          editInventario(String(inventario.id_inventario))
-                        }
-                      >
-                        <IonIcon icon={pencil} slot="icon-only" />
-                      </IonButton>
-
-                      <IonButton
-                        color="danger"
-                        fill="clear"
-                        onClick={() => remove(String(inventario.id_inventario))}
-                      >
-                        <IonIcon icon={close} slot="icon-only" />
-                      </IonButton>
-                    </IonCol>
-                  </IonRow>
-                ))}
-              </IonGrid>
+            <div className="card-container">
+              {filteredInventarios.map((inventario: Inventario) => (
+                <IonCard key={inventario.id_inventario}>
+                  <IonCardContent>
+                    <IonTitle>{inventario.nombre}</IonTitle>
+                    <IonRow>
+                      <IonCol>Cantidad: {inventario.cantidad}</IonCol>
+                      <IonCol>
+                        Fecha de Entrada: {inventario.fechaingreso}
+                      </IonCol>
+                      <IonCol>Proveedor: {inventario.proveedor}</IonCol>
+                      <IonCol>
+                        Precio de Compra: {inventario.preciocompra}
+                      </IonCol>
+                      <IonCol>Precio de Venta: {inventario.precioventa}</IonCol>
+                    </IonRow>
+                    <IonRow>
+                      <IonCol>
+                        <IonButton
+                          color="primary"
+                          fill="clear"
+                          onClick={() =>
+                            editInventario(String(inventario.id_inventario))
+                          }
+                        >
+                          <IonIcon icon={pencil} slot="icon-only" />
+                        </IonButton>
+                      </IonCol>
+                      <IonCol>
+                        <IonButton
+                          color="danger"
+                          fill="clear"
+                          onClick={() =>
+                            remove(String(inventario.id_inventario))
+                          }
+                        >
+                          <IonIcon icon={close} slot="icon-only" />
+                        </IonButton>
+                      </IonCol>
+                    </IonRow>
+                  </IonCardContent>
+                </IonCard>
+              ))}
             </div>
           </IonCard>
         </IonContent>
