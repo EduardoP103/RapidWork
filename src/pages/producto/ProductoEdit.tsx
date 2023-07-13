@@ -20,6 +20,7 @@ import {
 import { useHistory, useParams, useRouteMatch } from "react-router";
 import ExploreContainer from "../../components/ExploreContainer";
 import { add, checkmark, close, pencil, text, trash } from "ionicons/icons";
+
 import {
   removeProducto,
   saveProducto,

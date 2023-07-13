@@ -107,10 +107,8 @@ const ProductoList: React.FC = () => {
 
   const handlePay = () => {
     if (popoverState.cartItems.length === 0) {
-      // Mostrar alerta si no se seleccionaron productos
       setShowPaymentAlert(true);
     } else {
-      // Realizar pago
       const totalAmount = calculateTotalPrice();
       setShowPaymentAlert(true);
       setPaymentAmount(totalAmount);
@@ -118,8 +116,7 @@ const ProductoList: React.FC = () => {
   };
 
   const handleCancel = () => {
-    // Lógica para cancelar la lista de productos
-    setPopoverState({ showPopover: false, imageSrc: "", cartItems: [] });
+    _: setPopoverState({ showPopover: false, imageSrc: "", cartItems: [] });
   };
 
   return (
