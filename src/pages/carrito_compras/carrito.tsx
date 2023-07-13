@@ -6,7 +6,6 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import Producto from "../producto/Producto";
 
 const Carrito: React.FC = () => {
   // Aquí debes incluir el estado para los productos agregados al carrito
