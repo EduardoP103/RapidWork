@@ -82,9 +82,9 @@ const App: React.FC = () => {
               <PedidoList />
             </Route>
 
-            <Route path="/carrito" exact={true}>
+            {/* <Route path="/carrito" exact={true}>
               <Carrito />
-            </Route>
+            </Route> */}
             <Route exact path="/">
               <Redirect to="/page/productos" />
             </Route>
