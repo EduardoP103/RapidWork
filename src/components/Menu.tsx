@@ -84,8 +84,6 @@ const appPages: AppPage[] = [
   },
 ];
 
-const labels = ["Family", "Friends", "Notes", "Work", "Travel", "Reminders"];
-
 const Menu: React.FC = () => {
   const location = useLocation();
 
@@ -98,7 +96,6 @@ const Menu: React.FC = () => {
             alt="RapidWork"
             style={{ width: "50%" }}
           ></IonImg>
-
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
