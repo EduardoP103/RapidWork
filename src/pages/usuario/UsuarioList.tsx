@@ -10,23 +10,27 @@ import {
   IonItem,
   IonMenuButton,
   IonPage,
+  IonPopover,
   IonRow,
   IonSearchbar,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { add, close, pencil, trash } from "ionicons/icons";
+import { add, close, downloadOutline, pencil } from "ionicons/icons";
 import { useEffect, useState } from "react";
-import { removeUsuario, saveUsuario, searchUsuarios } from "./UsuarioApi";
+import { removeUsuario, searchUsuarios } from "./UsuarioApi";
 import Usuario from "./Usuario";
-
+import { utils as XLSXUtils, writeFile } from "xlsx";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import "../../theme/table.css";
 
 const UsuarioList: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  const [usuarios, setUsuarioes] = useState<Usuario[]>([]);
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showPopover, setShowPopover] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -35,7 +39,7 @@ const UsuarioList: React.FC = () => {
 
   const search = async () => {
     let result = await searchUsuarios();
-    setUsuarioes(result);
+    setUsuarios(result);
   };
 
   const remove = async (id: string) => {
@@ -59,6 +63,30 @@ const UsuarioList: React.FC = () => {
     const fullName = `${usuario.nombre} ${usuario.apellido}`;
     return fullName.toLowerCase().includes(searchTerm.toLowerCase());
   });
+
+  const exportToExcel = () => {
+    const worksheet = XLSXUtils.json_to_sheet(usuarios);
+    const workbook = XLSXUtils.book_new();
+    XLSXUtils.book_append_sheet(workbook, worksheet, "Usuarios");
+    writeFile(workbook, "usuarios.xlsx");
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    const tableData = usuarios.map((usuario) => [
+      usuario.nombre,
+      usuario.apellido,
+      usuario.cargo,
+      usuario.direccion,
+      usuario.email,
+      usuario.telefono,
+    ]);
+    doc.autoTable({
+      head: [["Nombre", "Apellido", "Cargo", "Dirección", "Email", "Teléfono"]],
+      body: tableData,
+    });
+    doc.save("usuarios.pdf");
+  };
 
   return (
     <IonPage>
@@ -92,6 +120,17 @@ const UsuarioList: React.FC = () => {
                 <IonIcon icon={add} />
                 Agregar Usuario
               </IonButton>
+
+              <IonButton
+                onClick={() => setShowPopover(true)}
+                color="primary"
+                fill="solid"
+                slot="end"
+                size="default"
+              >
+                <IonIcon icon={downloadOutline} />
+                Exportar
+              </IonButton>
             </IonItem>
 
             <IonSearchbar
@@ -108,7 +147,6 @@ const UsuarioList: React.FC = () => {
                   <IonCol>Dirección</IonCol>
                   <IonCol>Email</IonCol>
                   <IonCol>Teléfono</IonCol>
-                  <IonCol>Password</IonCol>
                   <IonCol>Acciones</IonCol>
                 </IonRow>
                 {filteredUsuarios.map((usuario: Usuario) => (
@@ -123,13 +161,6 @@ const UsuarioList: React.FC = () => {
                     <IonCol>{usuario.direccion}</IonCol>
                     <IonCol>{usuario.email}</IonCol>
                     <IonCol>{usuario.telefono}</IonCol>
-                    <IonCol>
-                      <input
-                        type="password"
-                        value={usuario.password}
-                        readOnly
-                      />
-                    </IonCol>
                     <IonCol className="actions-column">
                       <IonButton
                         color="primary"
@@ -152,6 +183,28 @@ const UsuarioList: React.FC = () => {
               </IonGrid>
             </div>
           </IonCard>
+
+          <IonPopover
+            isOpen={showPopover}
+            onDidDismiss={() => setShowPopover(false)}
+          >
+            <IonButton
+              onClick={exportToExcel}
+              expand="full"
+              color="primary"
+              fill="solid"
+            >
+              Exportar a Excel
+            </IonButton>
+            <IonButton
+              onClick={exportToPDF}
+              expand="full"
+              color="primary"
+              fill="solid"
+            >
+              Exportar a PDF
+            </IonButton>
+          </IonPopover>
         </IonContent>
       </IonContent>
     </IonPage>

@@ -10,23 +10,34 @@ import {
   IonItem,
   IonMenuButton,
   IonPage,
+  IonPopover,
   IonRow,
   IonSearchbar,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { add, close, pencil, trash } from "ionicons/icons";
+import {
+  add,
+  arrowDown,
+  close,
+  downloadOutline,
+  downloadSharp,
+  pencil,
+} from "ionicons/icons";
 import { useEffect, useState } from "react";
-import { removeCliente, saveCliente, searchClientes } from "./ClienteApi";
+import { removeCliente, searchClientes } from "./ClienteApi";
 import Cliente from "./Cliente";
-
+import { utils as XLSXUtils, writeFile } from "xlsx";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import "../../theme/table.css";
 
 const ClienteList: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  const [clientes, setClientees] = useState<Cliente[]>([]);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showPopover, setShowPopover] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -35,7 +46,7 @@ const ClienteList: React.FC = () => {
 
   const search = async () => {
     let result = await searchClientes();
-    setClientees(result);
+    setClientes(result);
   };
 
   const remove = async (id: string) => {
@@ -59,6 +70,29 @@ const ClienteList: React.FC = () => {
     const fullName = `${cliente.nombre} ${cliente.apellido}`;
     return fullName.toLowerCase().includes(searchTerm.toLowerCase());
   });
+
+  const exportToExcel = () => {
+    const worksheet = XLSXUtils.json_to_sheet(clientes);
+    const workbook = XLSXUtils.book_new();
+    XLSXUtils.book_append_sheet(workbook, worksheet, "Clientes");
+    writeFile(workbook, "clientes.xlsx");
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    const tableData = clientes.map((cliente) => [
+      cliente.nombre,
+      cliente.apellido,
+      cliente.direccion,
+      cliente.dni,
+      cliente.email,
+    ]);
+    doc.autoTable({
+      head: [["Nombre", "Apellido", "Dirección", "DNI", "Correo"]],
+      body: tableData,
+    });
+    doc.save("clientes.pdf");
+  };
 
   return (
     <IonPage>
@@ -91,6 +125,17 @@ const ClienteList: React.FC = () => {
               >
                 <IonIcon icon={add} />
                 Agregar Cliente
+              </IonButton>
+
+              <IonButton
+                onClick={() => setShowPopover(true)}
+                color="primary"
+                fill="solid"
+                slot="end"
+                size="default"
+              >
+                <IonIcon icon={downloadOutline} />
+                Exportar
               </IonButton>
             </IonItem>
 
@@ -138,6 +183,28 @@ const ClienteList: React.FC = () => {
               </IonGrid>
             </div>
           </IonCard>
+
+          <IonPopover
+            isOpen={showPopover}
+            onDidDismiss={() => setShowPopover(false)}
+          >
+            <IonButton
+              onClick={exportToExcel}
+              expand="full"
+              color="primary"
+              fill="solid"
+            >
+              Exportar a Excel
+            </IonButton>
+            <IonButton
+              onClick={exportToPDF}
+              expand="full"
+              color="primary"
+              fill="solid"
+            >
+              Exportar a PDF
+            </IonButton>
+          </IonPopover>
         </IonContent>
       </IonContent>
     </IonPage>

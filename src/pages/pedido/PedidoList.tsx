@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IonButton,
   IonButtons,
   IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
   IonCol,
   IonContent,
   IonGrid,
@@ -17,7 +21,17 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { add, close, pencil, trash } from "ionicons/icons";
+import {
+  add,
+  calendar,
+  calendarNumberOutline,
+  calendarOutline,
+  close,
+  mailOutline,
+  pencil,
+  readerOutline,
+  trash,
+} from "ionicons/icons";
 import { removePedido, savePedido, searchPedidos } from "./PedidoApi";
 import Pedido from "./Pedido";
 
@@ -65,6 +79,12 @@ const PedidoList: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
+            <IonCardContent>
+              <IonButton expand="full" onClick={addPedido} color="primary">
+                <IonIcon icon={add} slot="start" />
+                Agregar Pedido
+              </IonButton>
+            </IonCardContent>
             <IonMenuButton />
           </IonButtons>
           <IonTitle>{name}</IonTitle>
@@ -79,67 +99,59 @@ const PedidoList: React.FC = () => {
         </IonHeader>
 
         <IonContent>
-          <IonCard>
-            <IonTitle>Listado de Pedidos</IonTitle>
-            <IonItem>
-              <IonButton
-                onClick={addPedido}
-                color="primary"
-                fill="solid"
-                slot="end"
-                size="default"
-              >
-                <IonIcon icon={add} />
-                Agregar Pedido
-              </IonButton>
-            </IonItem>
-
-            <IonSearchbar
-              value={searchTerm}
-              onIonInput={handleSearch}
-            ></IonSearchbar>
-
-            <div className="table-container">
-              <IonGrid className="table">
-                <IonRow className="header-row">
-                  <IonCol>Fecha Pedido</IonCol>
-                  <IonCol>Fecha Entrega</IonCol>
-                  <IonCol>Nombre</IonCol>
-                  <IonCol>Apellido</IonCol>
-                  <IonCol>DNI</IonCol>
-                  <IonCol>Correo</IonCol>
-                  <IonCol>Acciones</IonCol>
-                </IonRow>
-                {filteredPedidos.map((pedido: Pedido) => (
-                  <IonRow className="data-row" key={pedido.id_pedido}>
-                    <IonCol>{pedido.fechaPedido}</IonCol>
-                    <IonCol>{pedido.fechaEntrega}</IonCol>
-                    <IonCol>{pedido.id_cliente.nombre}</IonCol>
-                    <IonCol>{pedido.id_cliente.apellido}</IonCol>
-                    <IonCol>{pedido.id_cliente.dni}</IonCol>
-                    <IonCol>{pedido.id_cliente.email}</IonCol>
-                    <IonCol className="actions-column">
-                      <IonButton
-                        color="primary"
-                        fill="clear"
-                        onClick={() => editPedido(String(pedido.id_pedido))}
-                      >
-                        <IonIcon icon={pencil} slot="icon-only" />
-                      </IonButton>
-
-                      <IonButton
-                        color="danger"
-                        fill="clear"
-                        onClick={() => remove(String(pedido.id_pedido))}
-                      >
-                        <IonIcon icon={close} slot="icon-only" />
-                      </IonButton>
-                    </IonCol>
-                  </IonRow>
-                ))}
-              </IonGrid>
-            </div>
-          </IonCard>
+          <IonGrid fixed>
+            <IonRow>
+              {filteredPedidos.map((pedido: Pedido) => (
+                <IonCol
+                  size="12"
+                  size-md="6"
+                  size-lg="4"
+                  key={pedido.id_pedido}
+                >
+                  <IonCard>
+                    <IonCardHeader>
+                      <IonCardSubtitle>
+                        {pedido.id_cliente.nombre}
+                      </IonCardSubtitle>
+                      <IonCardTitle>{pedido.id_cliente.apellido}</IonCardTitle>
+                    </IonCardHeader>
+                    <IonCardContent>
+                      <IonItem>
+                        <IonIcon icon={calendarOutline} />
+                        <span>{pedido.fechaPedido}</span>
+                      </IonItem>
+                      <IonItem>
+                        <IonIcon icon={calendarNumberOutline} />
+                        <span>{pedido.fechaEntrega}</span>
+                      </IonItem>
+                      <IonItem>
+                        <IonIcon icon={readerOutline} />
+                        <span>{pedido.id_cliente.dni}</span>
+                      </IonItem>
+                      <IonItem>
+                        <IonIcon icon={mailOutline} />
+                        <span>{pedido.id_cliente.email}</span>
+                      </IonItem>
+                      <IonItem>
+                        <IonIcon icon={add} />
+                        <IonButton
+                          onClick={() => editPedido(String(pedido.id_pedido))}
+                        >
+                          Editar
+                        </IonButton>
+                        <IonButton
+                          onClick={() => remove(String(pedido.id_pedido))}
+                          color="danger"
+                        >
+                          Eliminar
+                        </IonButton>
+                      </IonItem>
+                    </IonCardContent>
+                  </IonCard>
+                </IonCol>
+              ))}
+            </IonRow>
+          </IonGrid>
         </IonContent>
       </IonContent>
     </IonPage>
