@@ -22,6 +22,7 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
+  IonAlert,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import { add, close, pencil, trash, image, cart } from "ionicons/icons";
@@ -39,6 +40,8 @@ const ProductoList: React.FC = () => {
     imageSrc: string;
     cartItems: Producto[];
   }>({ showPopover: false, imageSrc: "", cartItems: [] });
+  const [showPaymentAlert, setShowPaymentAlert] = useState<boolean>(false);
+  const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const history = useHistory();
 
   useEffect(() => {
@@ -103,8 +106,15 @@ const ProductoList: React.FC = () => {
   };
 
   const handlePay = () => {
-    // Lógica para realizar el pago
-    console.log("Pago realizado");
+    if (popoverState.cartItems.length === 0) {
+      // Mostrar alerta si no se seleccionaron productos
+      setShowPaymentAlert(true);
+    } else {
+      // Realizar pago
+      const totalAmount = calculateTotalPrice();
+      setShowPaymentAlert(true);
+      setPaymentAmount(totalAmount);
+    }
   };
 
   const handleCancel = () => {
@@ -225,6 +235,20 @@ const ProductoList: React.FC = () => {
             Cancelar
           </IonButton>
         </IonPopover>
+
+        <IonAlert
+          isOpen={showPaymentAlert}
+          onDidDismiss={() => setShowPaymentAlert(false)}
+          header={
+            popoverState.cartItems.length === 0 ? "Error" : "Pago exitoso"
+          }
+          message={
+            popoverState.cartItems.length === 0
+              ? "Debes seleccionar al menos un producto."
+              : `Pago exitoso. Cantidad total: S/${paymentAmount.toFixed(2)}.`
+          }
+          buttons={["Aceptar"]}
+        />
       </IonContent>
     </IonPage>
   );

@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   IonButton,
   IonButtons,
@@ -14,10 +15,10 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
+  IonImg,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import { add, close, pencil, trash } from "ionicons/icons";
-import { useEffect, useState } from "react";
 import {
   removeInventario,
   saveInventario,
@@ -109,6 +110,10 @@ const InventarioList: React.FC = () => {
                 <IonCard key={inventario.id_inventario}>
                   <IonCardContent>
                     <IonTitle>{inventario.nombre}</IonTitle>
+                    <IonImg
+                      src={inventario.id_producto.imagen}
+                      alt="Imagen del producto"
+                    />
                     <IonRow>
                       <IonCol>Cantidad: {inventario.cantidad}</IonCol>
                       <IonCol>
