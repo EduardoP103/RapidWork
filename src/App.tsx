@@ -32,6 +32,8 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 import "./theme/variables.css";
+import PedidoEdit from "./pages/pedido/PedidoEdit";
+import PedidoList from "./pages/pedido/PedidoList";
 
 setupIonicReact();
 
@@ -72,6 +74,14 @@ const App: React.FC = () => {
             <Route path="/page/inventarios" exact={true}>
               <InventarioList />
             </Route>
+
+            <Route path="/page/pedido/:id" exact={true}>
+              <PedidoEdit />
+            </Route>
+            <Route path="/page/pedidos" exact={true}>
+              <PedidoList />
+            </Route>
+
             <Route path="/carrito" exact={true}>
               <Carrito />
             </Route>

@@ -1,6 +1,8 @@
 import {
+  IonAvatar,
   IonContent,
   IonIcon,
+  IonImg,
   IonItem,
   IonLabel,
   IonList,
@@ -69,12 +71,6 @@ const appPages: AppPage[] = [
     mdIcon: archiveSharp,
   },
   {
-    title: "Metodo de Pago",
-    url: "/page/metodos",
-    iosIcon: cardOutline,
-    mdIcon: cardOutline,
-  },
-  {
     title: "Pedido",
     url: "/page/pedidos",
     iosIcon: speedometerOutline,
@@ -97,8 +93,12 @@ const Menu: React.FC = () => {
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>RapidWork</IonListHeader>
-          <IonNote>atencionalcliente@rapidwork.com</IonNote>
+          <IonImg
+            src="/public/logo.png"
+            alt="RapidWork"
+            style={{ width: "50%" }}
+          ></IonImg>
+
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
@@ -122,16 +122,6 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
-        </IonList>
-
-        <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon aria-hidden="true" slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
         </IonList>
       </IonContent>
     </IonMenu>
