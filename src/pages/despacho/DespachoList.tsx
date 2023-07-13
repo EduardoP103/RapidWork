@@ -130,9 +130,10 @@ const DespachoList: React.FC = () => {
                           </p>
                         </IonLabel>
                         <IonButton
+                          onClick={() => editDespacho(despacho.id_despacho!)}
                           color="primary"
                           fill="clear"
-                          onClick={() => editDespacho(despacho.id_despacho)}
+                          slot="start"
                         >
                           <IonIcon icon={pencil} slot="icon-only" />
                         </IonButton>
